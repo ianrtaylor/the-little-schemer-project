@@ -39,3 +39,26 @@
 (define tup+  (lambda (tup1 tup2)    (cond      ((null? tup1) tup2)      ((null? tup2) tup1)      (else        (cons (+ (car tup1) (car tup2))          (tup+ (cdr tup1) (cdr tup2)))))))
 
 ; comparison operators, defined recursively
+; greater than:
+(define o>
+  (lambda (n m)
+    (cond
+      ((zero? n) #f)
+      ((zero? m) #t)
+      (else (o> (sub1 n) (sub1 m))))))
+
+; less than:
+(define o<
+  (lambda (n m)
+    (cond
+      ((zero? m) #f)
+      ((zero? n) #t)
+      (else (o< (sub1 n) (sub1 m))))))
+
+; equality:
+(define o=
+  (lambda (n m)
+    (cond
+      ((o> n m) #f)
+      ((o< n m) #f)
+      (else #t))))
