@@ -62,3 +62,11 @@
       ((o> n m) #f)
       ((o< n m) #f)
       (else #t))))
+
+; exponent operators
+(define o^
+  (lambda (n m)
+    (cond
+      ((zero? n) 0)
+      ((zero? m) 1)
+      (else (o* n (o^ n (sub1 m)))))))
