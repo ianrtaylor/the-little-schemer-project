@@ -77,3 +77,11 @@
     (cond
       ((o< n m) 0)
       (else (add1 (o/ (o- n m) m))))))
+
+; get the length of a list
+;(defined as olength, since there's already a length)
+(define olength
+  (lambda (lat)
+    (cond
+      ((null? lat) 0)
+      (else (add1 (olength (cdr lat)))))))
