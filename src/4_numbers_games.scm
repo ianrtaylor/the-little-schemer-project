@@ -100,3 +100,55 @@
       ((zero? (sub1 n)) (cdr lat))
       (else (cons (car lat)
             (rempick (sub1 n) (cdr lat)))))))
+
+; remove all number atoms from list
+(define no-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+        ((number? (car lat))
+        (no-nums (cdr lat)))
+        (else (cons (car lat)
+              (no-nums (cdr lat)))))))))
+
+; generate a tuple of only number elements from lat
+(define all-nums
+  (lambda (lat)
+    (cond
+      ((null? lat) (quote ()))
+      (else (cond
+        ((number? (car lat))
+        (cons (car lat) (all-nums (cdr lat))))
+        (else (all-nums (cdr lat))))))))
+
+; return true if args a1 and a2 are the same atom
+(define equan?
+  (lambda (a1 a2)
+    (cond
+      ((and (number? a1) (number? a2)) (o= a1 a2))
+      ((or (number? a1) (number? a2)) #f)
+      (else (eq? a1 a2)))))
+
+; how many times does atom a appear in lat
+(define occur
+  (lambda (a lat)
+    (cond
+      ((null? lat) 0)
+      (else (cond
+        ((eq? (car lat) a)
+        (add1 (occur a (cdr lat))))
+        (else (occur a (cdr lat))))))))
+
+; is n == 1?
+(define one?
+  (lambda (n)
+    (o= n 1)))
+
+; better version of rempick
+(define rempick-better
+  (lambda (n lat)
+    (cond
+      ((one? n) (cdr lat))
+      (else (cons (car lat)
+            (rempick (sub1 n) (cdr lat)))))))
