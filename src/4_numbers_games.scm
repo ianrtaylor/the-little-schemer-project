@@ -85,3 +85,10 @@
     (cond
       ((null? lat) 0)
       (else (add1 (olength (cdr lat)))))))
+
+; pick the nth element (not 0 indexed!)
+(define pick
+  (lambda (n lat)
+    (cond
+      ((zero? (sub1 n)) (car lat))
+      (else (pick (sub1 n) (cdr lat))))))
