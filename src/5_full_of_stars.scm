@@ -33,5 +33,24 @@
           ((eq? (car l) old)
             (cons old (cons new (insertR* new old (cdr l)))))
         (else (cons (car l) (insertR* new old (cdr l))))))
-    (else (cons (insertR* new old (car l))          ; notice how the recursion splits into two branches
+    (else (cons (insertR* new old (car l))          ; notice how the recursion splits into two branches:
                 (insertR* new old (cdr l)))))))     ; 1) recurring down (car l) and 2) recurring down (cdr l)
+
+; occur* counts occurences of a in l
+(define occur*
+  (lambda (a l)
+    (cond
+      ((null? l) 0)
+      ((atom? (car l))
+        (cond
+          ((eq? (car l) a)
+            (add1 (occur* a (cdr l))))
+          (else (occur* a (cdr l)))))
+    (else (o+ (occur* a (car l))
+              (occur* a (cdr l)))))))
+
+; try occur* with l below
+(define l '((banana) (split ((((banana ice))) (cream (banana)) sherbet)) (banana) (bread) (banana brandy)))
+
+; N.B. *-functions still only hunt for atoms. So we couldn't do:
+; (occur* '(banana brandy) l)
