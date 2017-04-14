@@ -54,3 +54,16 @@
 
 ; N.B. *-functions still only hunt for atoms. So we couldn't do:
 ; (occur* '(banana brandy) l)
+
+(define subst*
+  (lambda (new old l)
+    (cond
+      ((null? l) (quote ()))
+      ((atom? (car l))
+        (cond
+          ((eq? (car l) old)
+            (cons new (subst* new old (cdr l))))
+          (else (cons (car l) (subst* new old (cdr l))))))
+    (else
+      (cons (subst* new old (car l))
+            (subst* new old (cdr l)))))))
