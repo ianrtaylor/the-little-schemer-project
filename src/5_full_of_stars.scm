@@ -8,7 +8,7 @@
         (cond
           ((eq? (car l) a)                  ; if so, is it eqal to a?
             (rember* a (cdr l)))            ; then recur on the remainder of l, removing a
-          (else (cons (car l)               ; otherwise, begin building new list
+        (else (cons (car l)               ; otherwise, begin building new list
             (rember* a (cdr l))))))
     (else (cons (rember* a (car l))     ; if first element of l is neither null nor an atom...
         (rember* a (cdr l)))))))        ; then build new list...
@@ -45,7 +45,7 @@
         (cond
           ((eq? (car l) a)
             (add1 (occur* a (cdr l))))
-          (else (occur* a (cdr l)))))
+        (else (occur* a (cdr l)))))
     (else (o+ (occur* a (car l))
               (occur* a (cdr l)))))))
 
@@ -63,7 +63,31 @@
         (cond
           ((eq? (car l) old)
             (cons new (subst* new old (cdr l))))
-          (else (cons (car l) (subst* new old (cdr l))))))
+        (else (cons (car l) (subst* new old (cdr l))))))
     (else
       (cons (subst* new old (car l))
             (subst* new old (cdr l)))))))
+
+(define insertL*
+  (lambda (new old l)
+    (cond
+      ((null? l) (quote ()))
+      ((atom? (car l))
+        (cond
+          ((eq? (car l) old)
+            (cons new (cons old                 ; cons both new AND old, so that we can recur down the
+              (insertL* new old (cdr l)))))     ; remaining elements of l
+        (else (cons (car l) (insertL* new old (cdr l))))))
+    (else (cons (insertL* new old (car l))
+                (insertL* new old (cdr l)))))))
+
+; return true/false if a is/is not an atom in l
+(define member*
+  (lambda (a l)
+    (cond
+      ((null? l) #f)
+      ((atom? (car l))              ; if (car l) is an atom...
+        (or (eq? a (car l))         ; ...then return the answer to the question:...
+            (member* a (cdr l))))   ; ...is a equal to  (car l) or is a an atom of (cdr l)
+    (else (or (member* a (car l))
+              (member* a (cdr l)))))))
