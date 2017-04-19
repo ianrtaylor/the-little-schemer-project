@@ -1,3 +1,13 @@
+; 08/19/2017
+; irtaylor's Notes, since this chapter is hard(er):
+; *-functions work on lists of S-expressions. Their distinguishing feature,
+; is that they recur down both the car AND the cdr of a list. This defines
+; a recurrence relation, as in T(n) = 2T(n/2) + n ... well, not that equation
+; exactly, but something like it. This is best visualized as a tree structure:
+; One branch proceeds down the car of the list, and the other branch proceeds
+; down the cdr of the list. 
+
+
 ; rember* vs rember
 ; test using (define l '((coffee) cup ((tea) cup) (and (hick)) cup))
 (define rember*
@@ -88,6 +98,6 @@
       ((null? l) #f)
       ((atom? (car l))              ; if (car l) is an atom...
         (or (eq? a (car l))         ; ...then return the answer to the question:...
-            (member* a (cdr l))))   ; ...is a equal to  (car l) or is a an atom of (cdr l)
+            (member* a (cdr l))))   ; ...is a equal to  (car l) or is a an atom of (cdr l)?
     (else (or (member* a (car l))
               (member* a (cdr l)))))))
