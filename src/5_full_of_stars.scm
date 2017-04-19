@@ -5,7 +5,12 @@
 ; a recurrence relation, as in T(n) = 2T(n/2) + n ... well, not that equation
 ; exactly, but something like it. This is best visualized as a tree structure:
 ; One branch proceeds down the car of the list, and the other branch proceeds
-; down the cdr of the list. 
+; down the cdr of the list.
+
+; use for these exercises:
+(define l '((banana) (split ((((banana ice))) (cream (banana)) sherbet)) (banana) (bread) (banana brandy)))
+(define new 'orange)
+(define old 'banana)
 
 
 ; rember* vs rember
@@ -60,7 +65,6 @@
               (occur* a (cdr l)))))))
 
 ; try occur* with l below
-(define l '((banana) (split ((((banana ice))) (cream (banana)) sherbet)) (banana) (bread) (banana brandy)))
 
 ; N.B. *-functions still only hunt for atoms. So we couldn't do:
 ; (occur* '(banana brandy) l)
@@ -101,3 +105,12 @@
             (member* a (cdr l))))   ; ...is a equal to  (car l) or is a an atom of (cdr l)?
     (else (or (member* a (car l))
               (member* a (cdr l)))))))
+
+
+; leftmost is not a true *-function, since it only recurs down
+; the list's car; it does not recur down the cdr.
+(define leftmost
+  (lambda (l)
+    (cond
+      ((atom? (car l)) (car l))
+    (else (leftmost (car l))))))
