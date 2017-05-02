@@ -12,7 +12,6 @@
 (define new 'orange)
 (define old 'banana)
 
-
 ; rember* vs rember
 ; test using (define l '((coffee) cup ((tea) cup) (and (hick)) cup))
 (define rember*
@@ -32,11 +31,6 @@
 ; rember* can work on lists of lists, because it treats each element
 ; of the list as a list. of each element, it asks: "is this null?", "is this an atom?"
 ; see the first commandment!
-
-; thinking more about lists:
-(define l '(((tomato sauce)) ((bean) sauce) (and ((flying)) sauce)))
-(car (car (car l)))        ; returns 'tomato
-(car (car (car (cdr l))))  ; returns 'bean
 
 ; ... carry on...
 (define insertR*
@@ -114,3 +108,5 @@
     (cond
       ((atom? (car l)) (car l))
     (else (leftmost (car l))))))
+
+; rewritten version of eqlist?
