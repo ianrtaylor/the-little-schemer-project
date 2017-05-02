@@ -123,7 +123,7 @@
         (else (all-nums (cdr lat))))))))
 
 ; return true if args a1 and a2 are the same atom
-(define equan?
+(define eqan?
   (lambda (a1 a2)
     (cond
       ((and (number? a1) (number? a2)) (o= a1 a2))
