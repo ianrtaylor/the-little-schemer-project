@@ -1,10 +1,11 @@
 #! /usr/bin/env bash
 # Ian Taylor 2017
 
-# Load all necessary files containing exercises 
+# Load all necessary files containing exercises
 
 rlwrap scheme --load \
 helpers.scm \
 3_cons_the_magnificent.scm \
 4_numbers_games.scm \
-5_full_of_stars.scm
+5_full_of_stars.scm \
+6_shadows.scm \
