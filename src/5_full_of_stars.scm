@@ -109,7 +109,7 @@
       ((atom? (car l)) (car l))
     (else (leftmost (car l))))))
 
-; rewritten version
+; eqlist v2
 (define eqlist?
   (lambda (l1 l2)
     (cond
@@ -117,8 +117,36 @@
       ((or (null? l1) (null? l2)) #f)             ; if we get here, we know they are not both null, so is one null but not the other?
       ((and (atom? (car l1)) (atom? (car l2)))    ; are the cars of l1 and l2 both atoms?
         (and (eqan? (car l1) (car l2))            ; also, are they the same atom? (see ch 4)
-        (eqlist? (cdr l1) (cdr l2))))               ; also, are the cdrs of l1 and l2 the same?
+          (eqlist? (cdr l1) (cdr l2))))           ; also, are the cdrs of l1 and l2 the same?
       ((or (atom? (car l1)) (atom? (car l2))) #f) ; if the cars of l1 and l2 are not both atoms, then is one an atom, but not the other?
     (else
       (and (eqlist? (car l1) (car l2))            ; if none of the above, then the cars are not atoms and we must see if the cars are the same list...
       (eqlist? (cdr l1) (cdr l2)))))))            ; and if the cdrs of l1 and l2 are the same list
+
+
+; check if two S-Expressions are equal
+(define equal?
+  (lambda (s1 s2)
+    (cond
+      ((and (atom? s1) (atom? s2))        ; if s1 and s2 are both atoms...
+        (eqan? s1 s2))                    ; then are they the same atom?
+      ((or (atom? s1) (atom? s2)) #f)     ; or, if one is an atom but not the other, then they're not equal
+    (else (eqlist? s1 s2)))))             ; if s1 and s2 are not atoms, then check equality using eqlist? (see definition of S-Expression)
+
+; eqlist v3
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+      ((and (null? l1) (null? l2)) #t)
+      ((or (null? l1) (null? l2)) #f)
+    (else
+      (and (equal? (car l1) (car l2))     ; equal? eliminates the need to explicitly check whether car l1 and l2 are atoms
+        (eqlist? (cdr l1) (cdr l2)))))))  ; this version is slightly more straightforward: are car l1 and l2 equal? if so, check the cdrs...
+
+; rember final version (not same as rember*)
+(define rember
+  (lambda (s l)
+    (cond
+      ((null? l) (quote ()))
+      ((equal? (car l) s) (cdr l))
+    (else (cons (car l) (rember s (cdr l)))))))   ; rember only recurs on the cdr... not on the car.
