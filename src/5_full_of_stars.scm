@@ -109,4 +109,16 @@
       ((atom? (car l)) (car l))
     (else (leftmost (car l))))))
 
-; rewritten version of eqlist?
+; rewritten version
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+      ((and (null? l1) (null? l2)) #t)            ; are both null? if so, they are equal.
+      ((or (null? l1) (null? l2)) #f)             ; if we get here, we know they are not both null, so is one null but not the other?
+      ((and (atom? (car l1)) (atom? (car l2)))    ; are the cars of l1 and l2 both atoms?
+        (and (eqan? (car l1) (car l2))            ; also, are they the same atom? (see ch 4)
+        (eqlist? (cdr l1) (cdr l2))))               ; also, are the cdrs of l1 and l2 the same?
+      ((or (atom? (car l1)) (atom? (car l2))) #f) ; if the cars of l1 and l2 are not both atoms, then is one an atom, but not the other?
+    (else
+      (and (eqlist? (car l1) (car l2))            ; if none of the above, then the cars are not atoms and we must see if the cars are the same list...
+      (eqlist? (cdr l1) (cdr l2)))))))            ; and if the cdrs of l1 and l2 are the same list
