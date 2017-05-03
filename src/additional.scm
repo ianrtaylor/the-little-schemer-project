@@ -11,3 +11,8 @@
 ; Definition of an S-Expression (p 92):
 ;   An S-expression is either an atom or a
 ;   (possibly empty) list of S-expressions.
+
+; Chapter 7
+; Test
+(set? '(apples peaches pears plums))           ; => #t
+(set? '(apples peaches pears apples plums))    ; => #f
