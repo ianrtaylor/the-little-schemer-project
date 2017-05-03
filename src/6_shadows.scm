@@ -36,14 +36,14 @@
     (cond
       ((atom? nexp) nexp)
       ((eq? (operator-prefix nexp) (quote o+))
-        (o+ (value (1st-sub-exp-prefix nexp))
-          (value (2nd-sub-exp nexp))))
+        (o+ (value-prefix (1st-sub-exp-prefix nexp))
+          (value-prefix (2nd-sub-exp nexp))))
       ((eq? (operator nexp) (quote o*))
-        (o* (value (1st-sub-exp-prefix nexp))
-          (value (2nd-sub-exp nexp))))
+        (o* (value-prefix (1st-sub-exp-prefix nexp))
+          (value-prefix (2nd-sub-exp nexp))))
     (else
-        (o^ (value (1st-sub-exp-prefix nexp))
-          (value (2nd-sub-exp nexp)))))))
+        (o^ (value-prefix (1st-sub-exp-prefix nexp))
+          (value-prefix (2nd-sub-exp nexp)))))))
 
 
 
@@ -72,4 +72,5 @@
           (value (2nd-sub-exp nexp)))))))
 
 ; Test:
-(value '((4 o+ 5) o* (2 o^ 3))) ; => 72
+(value '((4 o+ 5) o* (2 o^ 3)))           ; => 72
+(value-prefix '(o+ 1 (o^ 3 4)))           ; => 82
