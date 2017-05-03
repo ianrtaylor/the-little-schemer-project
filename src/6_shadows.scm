@@ -74,3 +74,27 @@
 ; Test:
 (value '((4 o+ 5) o* (2 o^ 3)))           ; => 72
 (value-prefix '(o+ 1 (o^ 3 4)))           ; => 82
+
+; Representing numbers using sequences of empty S-expressions:
+; e.g. 0 => (), 1 => (()), 2 => (() ()), 3 => (() () ()), etc
+(define sero?
+  (lambda (n)
+    (null? n)))
+
+(define edd1
+  (lambda (n)
+    (cons (quote ()) n)))
+
+(define zub1
+  (lambda (n)
+    (cdr n)))
+
+; q+ is this numeric representation's o+
+(define q+
+  (lambda (n m)
+    (cond
+      ((sero? m) n)
+    (else (edd1 (q+ n (zub1 m)))))))
+
+; Demo:
+(q+ '(()) '(() ()))     ; (+ 1 2)  ; => '(() () ())
