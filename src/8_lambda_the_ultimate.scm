@@ -1,4 +1,4 @@
-; Chapter 8: Lambda the Ultimate!!
+; Chapter 8: Lambda The Ultimate!!
 ; I'm so excited!
 
 ; -f functions are all about taking other functions as arguments

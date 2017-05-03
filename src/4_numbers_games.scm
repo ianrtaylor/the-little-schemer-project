@@ -1,3 +1,5 @@
+; Chapter 4: Numbers Games
+
 ; incremement number by adding 1
 (define add1
   (lambda (n)

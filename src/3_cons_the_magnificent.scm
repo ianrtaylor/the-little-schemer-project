@@ -1,3 +1,5 @@
+; Chapter 3: Cons The Magnificent 
+
 ; remember: remove member a from lat
 (define rember
   (lambda (a lat)

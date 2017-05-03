@@ -1,3 +1,5 @@
+; Chapter 5: Full Of Stars
+
 ; 08/19/2017
 ; irtaylor's Notes, since this chapter is hard(er):
 ; *-functions work on lists of S-expressions. Their distinguishing feature,
