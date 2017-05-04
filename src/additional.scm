@@ -18,3 +18,4 @@
 (set? '(apples peaches pears apples plums))    ; => #f
 (makeset '(apples peaches pears apples plums))
 (makeset-multi '(apple peach pear peach plum apple lemon peach))
+(makeset-multi '(apple 3 pear 4 9 apple 3 4))
