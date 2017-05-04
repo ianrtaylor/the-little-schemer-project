@@ -1,4 +1,4 @@
-; Chapter 3: Cons The Magnificent 
+; Chapter 3: Cons The Magnificent
 
 ; remember: remove member a from lat
 (define rember
@@ -16,8 +16,8 @@
   (lambda (l)
     (cond
       ((null? l) (quote ()))
-      (else (cons (car (car l))
-                  (firsts (cdr l)))))))
+    (else (cons (car (car l))
+                (firsts (cdr l)))))))
 
 ; insert new to the Right of first occurence of old in lat
 (define insertR
