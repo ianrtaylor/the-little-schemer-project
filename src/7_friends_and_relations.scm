@@ -50,7 +50,8 @@
       (or (member? (car set1) set2)
           (intersect? (cdr set1) set2))))))
 
-; return the actual intersection of set1 and set2
+; return the intersection of set1 and set2
+; i.e. return the atoms shared by set1 and set2
 (define intersect
   (lambda (set1 set2)
     (cond
@@ -70,3 +71,32 @@
        (union (cdr set1) set2))         ; if (car set1) in set2, then we don't need to save it
     (else (cons (car set1)
           (union (cdr set1) set2))))))
+
+; set difference function:
+; return set1 - set2
+(define xxx
+  (lambda (set1 set2)
+    (cond
+      ((null? set1) (quote ()))
+      ((member? (car set1) set2)
+       (xxx (cdr set1) set2))
+    (else (cons (car set1)
+          (xxx (cdr set1) set2))))))
+
+; given a list of sets,
+; return the atoms common to all
+(define intersectall
+  (lambda (l-set)
+    (cond
+      ((null? (cdr l-set)) (car l-set))
+    (else (intersect (car l-set)
+            (intersectall (cdr l-set)))))))
+
+(define a-pair?
+  (lambda (x)
+    (cond
+      ((null? x) #f)
+      ((atom? x) #f)
+      ((null? (cdr x)) #f)
+      ((null? (cdr (cdr x))) #t)
+    (else #f))))
