@@ -100,3 +100,66 @@
       ((null? (cdr x)) #f)
       ((null? (cdr (cdr x))) #t)
     (else #f))))
+
+(define first
+  (lambda (p)
+    (car p)))
+
+(define second
+  (lambda (p)
+     (car (cdr p))))
+
+; given two S-expressions, build a pair
+(define build
+  (lambda (s1 s2)
+    (cons s1 (cons s2 (quote ())))))
+
+(define third
+  (lambda (l)
+    (car (cdr (cdr l)))))
+
+; Relation: A list of pairs
+; Finite Function: A list of pairs in which no first element
+; of any pair is the same as any other first element (p 120)
+(define fun?
+  (lambda (rel)
+    (set? (firsts rel))))
+
+; Reverse each relation's pair's atoms
+(define revrel
+  (lambda (rel)
+    (cond
+      ((null? rel) (quote ()))
+    (else (cons (build (second (car rel))
+                       (first (car rel)))
+                (revrel (cdr rel)))))))
+
+; reverse a pair
+(define revpair
+  (lambda (pair)
+    (build (second pair) (first pair))))
+
+(define revrel2
+  (lambda (rel)
+    (cond
+      ((null? rel) (quote ()))
+    (else (cons (revpair (car rel))
+                (revrel2 (cdr rel)))))))
+
+(define fullfun?
+  (lambda (fun)
+    (set? (seconds fun))))
+
+; seconds takes a list (null or composed of non-empty lists).
+; it builds another list composed of second S-expression of
+; each internal list.
+(define seconds
+  (lambda (l)
+    (cond
+      ((null? l) (quote ()))
+    (else (cons (second (car l))
+                (seconds (cdr l)))))))
+
+(define one-to-one?
+  (lambda (fun)
+    (fun? (revrel fun))))

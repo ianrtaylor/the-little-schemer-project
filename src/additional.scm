@@ -22,3 +22,16 @@
 
 (define set1 '(stewed tomatoes and macaroni))
 (define set2 '(macaroni and cheese))
+(fun? '((8 3) (4 2) (7 6) (6 2) (3 4)))
+(revrel '((a b) (c d) (e g)))
+(revrel2 '((a b) (c d) (e g)))
+
+(equal? (revrel '((a b) (c d) (e g)))
+        (revrel2 '((a b) (c d) (e g))))
+
+(fun? '((grape raisin) (plum prune) (stewed grape))) ; => #t
+
+(fullfun? '((grape raisin) (plum prune) (stewed prune))) ; => #f
+(fullfun? '((grape raisin) (plum prune) (stewed grape))) ; => #t
+
+(one-to-one? '((chocolate chip) (doughy cookie))) ; => #t
