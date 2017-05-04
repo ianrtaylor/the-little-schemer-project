@@ -19,3 +19,6 @@
 (makeset '(apples peaches pears apples plums))
 (makeset-multi '(apple peach pear peach plum apple lemon peach))
 (makeset-multi '(apple 3 pear 4 9 apple 3 4))
+
+(define set1 '(stewed tomatoes and macaroni))
+(define set2 '(macaroni and cheese))

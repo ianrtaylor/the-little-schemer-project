@@ -40,3 +40,33 @@
   (lambda (set1 set2)
     (and (subset? set1 set2)
          (subset? set2 set1))))
+
+; is at least one atom of set1 in set2?
+(define intersect?
+  (lambda (set1 set2)
+    (cond
+      ((null? set1) #f)
+    (else
+      (or (member? (car set1) set2)
+          (intersect? (cdr set1) set2))))))
+
+; return the actual intersection of set1 and set2
+(define intersect
+  (lambda (set1 set2)
+    (cond
+      ((null? set1) (quote ()))
+      ((member? (car set1) set2)
+       (cons (car set1) (intersect (cdr set1) set2)))
+    (else (intersect (cdr set1) set2)))))
+
+; return the union of set1 and set2
+; i.e. return non-duplicate list of
+; all atoms in set1 and set2
+(define union
+  (lambda (set1 set2)
+    (cond
+      ((null? set1) set2)
+      ((member? (car set1) set2)        ; this step eliminates duplicates
+       (union (cdr set1) set2))         ; if (car set1) in set2, then we don't need to save it
+    (else (cons (car set1)
+          (union (cdr set1) set2))))))
