@@ -16,3 +16,5 @@
 ; Test
 (set? '(apples peaches pears plums))           ; => #t
 (set? '(apples peaches pears apples plums))    ; => #f
+(makeset '(apples peaches pears apples plums))
+(makeset-multi '(apple peach pear peach plum apple lemon peach))
