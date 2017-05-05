@@ -35,3 +35,10 @@
 (fullfun? '((grape raisin) (plum prune) (stewed grape))) ; => #t
 
 (one-to-one? '((chocolate chip) (doughy cookie))) ; => #t
+
+
+; Chapter 8
+; Example: Name of the function returned by
+; (rember-f test?), where test? is eq?
+(define test? eq?)
+(define rember-eq? (rember-f test?))
