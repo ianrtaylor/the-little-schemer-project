@@ -11,3 +11,10 @@
 
 ; rember-f can be whichever version we want, since we tell it which
 ; equality-checking function to use:
+(define rember-f
+  (lambda (test? a l)
+    (cond
+      ((null? l) (quote ()))
+      ((test? (car l) a) (cdr l))
+      (else (cons (car l)
+              (rember-f test? a (cdr l)))))))
