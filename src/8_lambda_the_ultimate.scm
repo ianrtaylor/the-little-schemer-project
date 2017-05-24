@@ -18,3 +18,89 @@
       ((test? (car l) a) (cdr l))
       (else (cons (car l)
               (rember-f test? a (cdr l)))))))
+
+; a curried equality functions
+; curried functions chain functions of one argument each:
+(define eq?-c
+  (lambda (a)
+    (lambda (x)
+      (eq? x a))))
+
+; (eq?-c 'salad) returns a function that takes x as an argument
+; and tests whether x is eq? to 'salad.
+; we can name that function thusly:
+(define eq?-salad
+  (eq?-c 'salad))
+
+; really, there's no need to name this function though. we could do:
+; ((eq?-c x) y) where x is 'salad and  y is 'tuna.
+
+; rember-f takes a function as a parameter, and it RETURNS A
+; FUNCTION which takes two parameters and compares them using the
+; function-parameter initially passed to rember-f
+(define rember-f
+  (lambda (test?)
+    (lambda (a l)
+      (cond
+        ((null? l) (quote ()))
+        ((test? (car l) a) (cdr l))
+      (else (cons (car l)
+        ((rember-f test?) a (cdr l))))))))
+
+; the same goes for insertL-f and insertR-f:
+; they take functions as parameters and return new functions
+; which operate differently based on the original function passed in
+; as a parameter
+(define insertL-f
+  (lambda (test?)
+    (lambda (new old l)
+      (cond
+        ((null? l) (quote ()))
+        ((test? (car l) old)
+          (cons new (cons old (cdr l))))
+      (else (cons (car l)
+            ((insertL-f test?) new old
+              (cdr l))))))))
+
+(define insertR-f
+  (lambda (test?)
+    (lambda (new old l)
+      (cond
+        ((null? l) (quote ()))
+        ((test? (car l) old)
+          (cons old (cons new (cdr l))))
+      (else (cons (car l)
+            ((insertR-f test?) new old
+              (cdr l))))))))
+
+
+; if we want to make insertR-f and insertL-f more generic,
+; we can define a function insert-g which will insert an argument
+; to either the right or left of the desired argument.
+
+; to do this, we need to first define functions that insert left and right.
+; these two functions will essentially be the difference between insertL and insertR:
+(define seqL
+  (lambda (new old l)
+    (cons new (cons old l))))
+
+(define seqR
+  (lambda (new old l)
+    (cons old (cons new l))))
+
+; now we can define insert-g:
+(define insert-g
+  (lambda (seq)
+    (lambda (new old l)
+      (cond
+        ((null? l) (quote ()))
+        ((eq? (car l) old)
+          (seq new old (cdr l)))        ; here we can use the function seq
+      (else (cons (car l)
+            ((insert-g seq) new old
+              (cdr l))))))))
+
+; now we can simplify insertL and insertR
+(define insertL (insert-g seqL))
+
+(define insertR (insert-g seqR))
