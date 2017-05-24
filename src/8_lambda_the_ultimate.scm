@@ -133,3 +133,13 @@
     (cons new l)))
 
 (define subst (insert-g seqS))
+
+
+; A fancy way to define rember
+(define seqrem
+  (lambda (new old l) l))
+
+(define yyy
+  (lambda (a l)
+    ((insert-g seqrem) #f a l)))    ; this is tricky... #f is a placeholder of sorts, just to provide a
+                                    ; parameter for insert-g.

@@ -42,3 +42,6 @@
 ; (rember-f test?), where test? is eq?
 (define test? eq?)
 (define rember-eq? (rember-f test?))
+
+(define a 'sausage)
+(define l '(pizza with sausage and bacon))
