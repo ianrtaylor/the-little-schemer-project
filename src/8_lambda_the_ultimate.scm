@@ -104,3 +104,32 @@
 (define insertL (insert-g seqL))
 
 (define insertR (insert-g seqR))
+
+; and now we can define them again in the most generic way,
+; i.e. by passing the lambda itself, rather than naming it
+(define insertL
+  (insert-g
+    (lambda (new old l)               ; this is the seqL lambda
+      (cons new (cons old l)))))
+
+(define insertR
+  (insert-g
+    (lambda (new old l)               ; this is the seqR lambda
+      (cons old (cons new l)))))
+
+; Now we can do the same again for subst, which could be like:
+(define subst
+  (lambda (new old l)
+    (cond
+      ((null? l) (quote ()))
+      ((eq? (car l) old)
+        (cons new (cdr l)))                ; this is like our seq functions
+    (else (cons (car l)
+            (subst new old (cdr l)))))))
+
+; First, we'll define the sequence function:
+(define seqS
+  (lambda (new old l)
+    (cons new l)))
+
+(define subst (insert-g seqS))
