@@ -72,3 +72,7 @@
       ((list-sum (cdr l) (lambda (s) (k (+ s (car l)))))))))
 
 (list-sum '(1 2 3 4) (lambda (x) x))   ; here, when we call the function, we pass a lambda for k
+
+
+(define add_cps
+  (lambda (a, b, done)))
