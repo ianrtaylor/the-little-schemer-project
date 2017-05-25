@@ -143,3 +143,115 @@
   (lambda (a l)
     ((insert-g seqrem) #f a l)))    ; this is tricky... #f is a placeholder of sorts, just to provide a
                                     ; parameter for insert-g.
+
+;; FULL DISCLOSURE:
+; I copied these next functions from https://github.com/pkrumins/the-little-schemer/blob/master/08-lambda-the-ultimate.ss#L266
+; If I have a criticism of this book, it's that it can be inconsistent, and its typeface can be confusing.
+; Even when directly copying from the book, I could get these functions to work, so I cheated a little.
+
+(define operator
+  (lambda (aexp)
+    (car aexp)))          ; note: for some reason, in ch 6 operator is defined with (car (cdr aexp))
+
+; value uses 1st-sub-exp
+;
+(define 1st-sub-exp
+  (lambda (aexp)
+    (car (cdr aexp))))
+
+; value uses 2nd-sub-exp
+(define 2nd-sub-exp
+  (lambda (aexp)
+    (car (cdr (cdr aexp)))))
+
+(define atom-to-function
+  (lambda (atom)
+    (cond
+      ((eq? atom 'o+) +)
+      ((eq? atom 'o*) *)
+      ((eq? atom 'o^) expt)
+      (else #f))))
+
+(define value
+  (lambda (nexp)
+    (cond
+      ((atom? nexp) nexp)
+    (else
+      ((atom-to-function (operator nexp))
+        (value (1st-sub-exp nexp))
+        (value (2nd-sub-exp nexp)))))))
+
+
+; now doing the same w/ multirember
+(define multirember-f
+  (lambda (test?)
+    (lambda (a lat)
+      (cond
+        ((null? lat) (quote ()))
+        ((test? a (car lat))
+          ((multirember-f test?) a
+            (cdr lat)))
+      (else
+        (cons (car lat)
+          ((multirember-f test?) a
+            (cdr lat))))))))
+
+(define multirember-eq?
+  (multirember-f eq?))
+
+(define multiremberT
+(lambda (test? lat)
+  (cond
+    ((null? lat) (quote ()))
+    ((test? (car lat))
+      (multiremberT test? (cdr lat)))
+  (else (cons (car lat)
+    (multiremberT test? (cdr lat)))))))
+
+; using collectors:
+; this function looks at every atom of lat to see whether it is eq? to a.
+; non-eq? atoms are collected in one list ls1; the others for which the answer
+; is true are collected in a second list ls2. Finally, it determines the value
+; of (f ls1 ls2)
+(define multirember&co
+  (lambda (a lat col)                   ; col stands for collector / continuation
+    (cond
+      ((null? lat)
+        (col (quote ()) (quote ())))
+      ((eq? (car lat) a)
+        (multirember&co a
+          (cdr lat)
+          (lambda (newlat seen)
+            (col newlat (cons (car lat) seen)))))
+    (else
+      (multirember&co a
+        (cdr lat)
+        (lambda (newlat seen)
+          (col (cons (car lat) newlat) seen)))))))
+
+(define a-friend
+  (lambda (x y)
+    (null? y)))
+
+(define new-friend
+  (lambda (newlat seen)
+    (a-friend newlat
+      (cons (quote tuna) seen))))
+
+(define latest-friend
+  (lambda (newlat seen)
+    (a-friend (cons (quote and) newlat)
+      seen)))
+
+(define last-friend
+  (lambda (x y)
+    (length x)))
+
+; using the above function, we can say
+; (define ls '(strawberries tuna and swordfish))
+; (define col last-friend)
+; and then (multirember&co (quote tuna) ls col) => 3
+; b/c ls contains three things that are not tuna, and
+; therefore the last-friend function will be used on ls and '(tuna)
+
+; see https://en.wikipedia.org/wiki/Continuation-passing_style

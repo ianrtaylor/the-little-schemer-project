@@ -45,3 +45,20 @@
 
 (define a 'sausage)
 (define l '(pizza with sausage and bacon))
+
+; test atom-to-function
+(define nexp '(+ 5 3))
+(atom-to-function (operator nexp))
+
+; multirember-f
+(define a 'tuna)
+(define lat '(shrimp salad tuna salad and tuna))
+((multirember-f eq?) a lat)
+
+; multirember&co
+(define a 'tuna)
+(define lat '(strawberries tuna and swordfish))
+(define col a-friend)
+
+(define ls '(strawberries tuna and swordfish))
+(define col last-friend)
