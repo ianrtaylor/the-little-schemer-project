@@ -62,3 +62,13 @@
 
 (define ls '(strawberries tuna and swordfish))
 (define col last-friend)
+
+; this is called Continuation-passing_style.
+; try a simpler example:
+(define list-sum
+  (lambda (l k)
+    (cond
+      ((null? l) (k 0))
+      ((list-sum (cdr l) (lambda (s) (k (+ s (car l)))))))))
+
+(list-sum '(1 2 3 4) (lambda (x) x))   ; here, when we call the function, we pass a lambda for k
