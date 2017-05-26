@@ -74,5 +74,13 @@
 (list-sum '(1 2 3 4) (lambda (x) x))   ; here, when we call the function, we pass a lambda for k
 
 
-(define add_cps
-  (lambda (a, b, done)))
+;(define add_cps
+;  (lambda (a, b, done)))
+
+
+;; multiinsert&co:
+(define lat (quote (bread chips and fish or fish and chips)))
+(define col
+  (lambda (lat L R)
+    lat))
+(multiinsertLR&co 'salty 'fish 'chips lat col) ; => (col (quote (chips salty and salty fish or salty fish and chips salty)) 2 2)

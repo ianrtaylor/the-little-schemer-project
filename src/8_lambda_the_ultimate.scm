@@ -255,3 +255,46 @@
 ; therefore the last-friend function will be used on ls and '(tuna)
 
 ; see https://en.wikipedia.org/wiki/Continuation-passing_style
+
+; multiinsertLR inserts mnew to left of oldL and to right of oldR
+; in lat if oldL and oldR are different
+(define multiinsertLR
+  (lambda (new oldL oldR lat)
+    (cond
+      ((null? lat) (quote ()))
+      ((eq? (car lat) oldL)
+        (cons new (cons oldL
+          (multiinsertLR new oldL oldR
+            (cdr lat)))))
+      ((eq? (car lat) oldR)
+        (cons oldR (cons new
+          (multiinsertLR new oldL oldR
+            (cdr lat)))))
+    (else
+      (cons (car lat)
+        (multiinsertLR new oldL oldR
+          (cdr lat)))))))
+
+; now define w/ a collector
+(define multiinsertLR&co
+  (lambda (new oldL oldR lat col)
+    (cond
+      ((null? lat) (col (quote ()) 0 0))
+      ((eq? (car lat) oldL)
+        (multiinsertLR&co new oldL oldR             
+          (cdr lat)
+          (lambda (newlat L R)
+            (col (cons new (cons oldL newlat))
+                 (add1 L) R))))
+      ((eq? (car lat) oldR)
+        (multiinsertLR&co new oldL oldR
+          (cdr lat)
+          (lambda (newlat L R)
+            (col (cons oldR (cons new newlat))
+                 L (add1 R)))))
+    (else
+      (multiinsertLR&co new oldL oldR
+        (cdr lat)
+        (lambda (newlat L R)
+          (col (cons (car lat) newlat)
+               L R)))))))
