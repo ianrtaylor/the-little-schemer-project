@@ -1,4 +1,6 @@
-Here are some notes on `multiinsertLR&co`, which is a really challenging exercise.
+*Chapter 8: Lambda The Ultimate* addresses the concept of [Continuation-Passing Style](https://en.wikipedia.org/wiki/Continuation-passing_style). I really struggled with these concepts, so here are some notes on the subject. 
+
+Specifically these are my idiosyncratic notes on `multiinsertLR&co`, which is a really challenging exercise.
 
 The definition provided by the book for `multiinsertLR&co` is:
 ```scheme
