@@ -305,3 +305,58 @@
 ; On each recursion, col changes, due to the lambda passed after (cdr lat). Once we hit the null case,
 ; we will then pass '() 0 0 as arguments to col. These arguments will become newlat, L R, for the final col,
 ; which will then begin to unwind the stack and evaluate all the col functions
+
+; resuming ...
+;remember:
+;all *-functions work on lists that are either
+; - empty,
+; - an atom consed onto a list , or
+; - a list consed onto a list.
+
+; even? checks if an argument is even
+(define even?
+  (lambda (n)
+    (o= (o* (o/ n 2) 2) n)))
+
+; remove all odd numbers from a list of nested lists
+(define evens-only*
+  (lambda (l)
+    (cond
+      ((null? l) (quote ()))
+      ((atom? (car l))
+        (cond
+          ((even? (car l))
+            (cons (car l)
+                  (evens-only* (cdr l))))
+        (else (evens-only* (cdr l)))))
+    (else (cons (evens-only* (car l))
+                (evens-only* (cdr l)))))))
+
+; let the fun begin:
+(define evens-only*&co
+  (lambda (l col)
+    (cond
+      ((null? l)
+       (col (quote ()) 1 0))
+      ((atom? (car l))
+       (cond
+         ((even? (car l))
+          (evens-only*&co (cdr l)
+                          (lambda (newl p s)
+                            (col (cons (car l) newl) (o* (car l) p) s))))
+       (else
+         (evens-only*&co (cdr l)
+                         (lambda (newl p s)
+                           (col newl p (+ (car l) s)))))))
+    (else
+      (evens-only*&co (car l)
+                      (lambda (al ap as)
+                        (evens-only*&co (cdr l)
+                                        (lambda (dl dp ds)
+                                          (col (cons al dl)
+                                               (o* ap dp)
+                                               (o+ as ds))))))))))
+
+(define the-last-friend
+  (lambda (newl product sum)
+    (cons sum (cons product newl))))

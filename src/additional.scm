@@ -87,3 +87,9 @@
 
 ; another col
 (define col (lambda (lat L R) (cons lat (cons L R))))
+
+; evens-only*
+(define l '((9 1 2 8) 3 10 ((9 9) 7 6) 2))
+
+; evens-only*&co
+(evens-only*&co '((9 1 2 8) 3 10 ((9 9) 7 6) 2) the-last-friend) ; => '(38 1920 (2 8) 10 (() 6) 2)
