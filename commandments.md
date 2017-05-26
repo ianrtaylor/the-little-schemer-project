@@ -60,7 +60,7 @@ Abstract common patterns with a new function.
 
 Build functions to collect more than one value at a time.
 
-(Ian's Note: This is called Continuation Passing Style)
+(My Note: This is called [Continuation Passing Style](https://en.wikipedia.org/wiki/Continuation-passing_style))
 
 # The Five Laws
 
