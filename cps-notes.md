@@ -1,27 +1,36 @@
 Here are some notes on multiinsertLR&co, which is a really challenging exercise.
 The basic definition for multiinsertLR&co is:
 
+```scheme
 (define multiinsertLR&co
   (lambda (new oldL oldR lat col)...)...)
+```
 
 Recall that with all recursive functions, we recur until we hit our base case.
 For this function, the base case is:
 
+```scheme
 ((null? lat) (col (quote ()) 0 0))
+```
 
 By the time we hit the null case, however, we have  repeatedly passed new lambdas
 for col, such that the col function is recursively built up.
 
+
 Say, for example, that we run multiinsertLR&co as follows:
 
+```scheme
 (define lat (quote (bread chips and fish or steam and chips)))
 (define col
   (lambda (lat L R)
     lat))
-(multiinsertLR&co 'salty 'fish 'chips lat col)  ;; => '(bread chips salty and salty fish or steam and chips salty)
+(multiinsertLR&co 'salty 'fish 'chips lat col)  ; => '(bread chips salty and salty fish or steam and chips salty)
+```
+
 
 By the time we hit the null case, col has been defined as follows:
 
+```scheme
 ((lambda (newlat L R)
    ((lambda (newlat L R)
       ((lambda (newlat L R)
@@ -72,6 +81,6 @@ By the time we hit the null case, col has been defined as follows:
  '()
  0
  0)
-
+```
 
 ... which is straight-up crazy. 
