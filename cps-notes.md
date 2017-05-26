@@ -1,5 +1,35 @@
-Here are some notes on multiinsertLR&co, which is a really challenging exercise.
-The basic definition for multiinsertLR&co is:
+Here are some notes on `multiinsertLR&co`, which is a really challenging exercise.
+
+The definition provided by the book for `multiinsertLR&co` is:
+```scheme
+(define multiinsertLR&co
+  (lambda (new oldL oldR lat col)
+    (cond
+      ((null? lat) (col (quote ()) 0 0))
+      ((eq? (car lat) oldL)
+        (multiinsertLR&co new oldL oldR
+          (cdr lat)
+          (lambda (newlat L R)
+            (col (cons new (cons oldL newlat))
+                 (add1 L) R))))
+      ((eq? (car lat) oldR)
+        (multiinsertLR&co new oldL oldR
+          (cdr lat)
+          (lambda (newlat L R)
+            (col (cons oldR (cons new newlat))
+                 L (add1 R)))))
+    (else
+      (multiinsertLR&co new oldL oldR
+        (cdr lat)
+        (lambda (newlat L R)
+          (col (cons (car lat) newlat)
+               L R)))))))
+```
+
+
+
+
+The signature for multiinsertLR&co is:
 
 ```scheme
 (define multiinsertLR&co
@@ -83,4 +113,5 @@ By the time we hit the null case, col has been defined as follows:
  0)
 ```
 
-... which is straight-up crazy. 
+... which is straight-up crazy. Anyways, the last three lines of this chunk are the parameters passed to outermost lambda.
+The lambdas will begin to evaluate from the outermost to the innermost. Each evaluation will pass new parameters for `newlat`, `L`, and `R`. `newlat` will be `cons`'ed up from `'()`, while `L` and `R` will both be added up from `0`. Note that the inner lambdas are all going to `cons` elements onto `newlat`, depending on which branch of `multiinsertLR&co` we followed. Additionally, the inner lambdas are going to call `add1` on either `L` or `R`, again depending on which branch we followed. 
