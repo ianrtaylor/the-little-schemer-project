@@ -79,8 +79,11 @@
 
 
 ;; multiinsert&co:
-(define lat (quote (bread chips and fish or fish and chips)))
+(define lat (quote (bread chips and fish or steam and chips)))
 (define col
   (lambda (lat L R)
     lat))
 (multiinsertLR&co 'salty 'fish 'chips lat col) ; => (col (quote (chips salty and salty fish or salty fish and chips salty)) 2 2)
+
+; another col
+(define col (lambda (lat L R) (cons lat (cons L R))))

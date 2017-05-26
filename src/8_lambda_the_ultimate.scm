@@ -281,7 +281,7 @@
     (cond
       ((null? lat) (col (quote ()) 0 0))
       ((eq? (car lat) oldL)
-        (multiinsertLR&co new oldL oldR             
+        (multiinsertLR&co new oldL oldR
           (cdr lat)
           (lambda (newlat L R)
             (col (cons new (cons oldL newlat))
@@ -298,3 +298,10 @@
         (lambda (newlat L R)
           (col (cons (car lat) newlat)
                L R)))))))
+
+;; Notes on the above: In CPS, when we define a function, the last argument is essentially
+; a function that we want to call when returning. In this case, we're going to return col.
+; Thus, when we actually call the function, we must define col to decide what to do with the return.
+; On each recursion, col changes, due to the lambda passed after (cdr lat). Once we hit the null case,
+; we will then pass '() 0 0 as arguments to col. These arguments will become newlat, L R, for the final col,
+; which will then begin to unwind the stack and evaluate all the col functions
