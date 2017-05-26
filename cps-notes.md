@@ -115,3 +115,31 @@ By the time we hit the null case, col has been defined as follows:
 
 ... which is straight-up crazy. Anyways, the last three lines of this chunk are the parameters passed to outermost lambda.
 The lambdas will begin to evaluate from the outermost to the innermost. Each evaluation will pass new parameters for `newlat`, `L`, and `R`. `newlat` will be `cons`'ed up from `'()`, while `L` and `R` will both be added up from `0`. Note that the inner lambdas are all going to `cons` elements onto `newlat`, depending on which branch of `multiinsertLR&co` we followed. Additionally, the inner lambdas are going to call `add1` on either `L` or `R`, again depending on which branch we followed. 
+
+Eventually, as the outer lambdas evaluate and collapse inwards, we reach:
+
+```scheme
+((lambda (newlat L R)
+   ((lambda (lat L R) lat) (cons (car (list 'bread 'chips 'and 'fish 'or 'steam 'and 'chips)) newlat) L R))
+ (list 'chips 'salty 'and 'salty 'fish 'or 'steam 'and 'chips 'salty)
+ 1
+ 2)
+```
+
+It's easier to see here how the innermost lambda is in fact the original definition of `col` that we passed when first calling `multiinserLR&co`. When this penultimate lambda collapses, we'll have:
+
+```scheme
+((lambda (lat L R) lat) (list 'bread 'chips 'salty 'and 'salty 'fish 'or 'steam 'and 'chips 'salty) 1 2)
+```
+... which, based on our original definition for `col`, simply returns the list that we've built up. 
+
+Of course, we could do other things with col:
+
+```scheme
+(define col
+  (lambda (lat L R)
+    (+ L R)))
+```
+... which would return a sum of the left insertions and right insertions, i.e. it would return the total number of insertions. 
+
+I think I now understand what people mean when they speak about 'Callback Hell'.
