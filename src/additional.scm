@@ -93,3 +93,12 @@
 
 ; evens-only*&co
 (evens-only*&co '((9 1 2 8) 3 10 ((9 9) 7 6) 2) the-last-friend) ; => '(38 1920 (2 8) 10 (() 6) 2)
+
+; ch 9:
+(looking 'caviar '(6 2 grits caviar 5 7 3))
+(looking 'caviar '(7 1 2 caviar 5 6 3))
+
+(shift '((a b) c))
+(shift '((a b) (c d)))
+
+(weight* '((a b) c))    ; => 7
