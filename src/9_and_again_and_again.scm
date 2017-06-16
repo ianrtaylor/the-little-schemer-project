@@ -112,3 +112,16 @@
 ; So, we need a tool that can tell us whether or not a function will
 ; return a value for every argument. This way, we could know if a function
 ; is stuck in an infinite loop, or just taking a long time.
+
+; write a function that checks whether some function stops for just the
+; empty list:
+
+; (define will-stop?
+;   (lambda (f)
+;     ...))
+
+; This function is impossible to define because of the Halting Problem!
+; will-stop? is a function that we can describe precisely, but cannot define
+; in our language.
+
+; ok... so what is (define ...)
