@@ -124,4 +124,112 @@
 ; will-stop? is a function that we can describe precisely, but cannot define
 ; in our language.
 
-; ok... so what is (define ...)
+
+
+; ok... so what is (define ...) ???
+; GET READY!
+
+(define length
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+      (else (add1 (length (cdr l)))))))
+
+; can we define length w/o the `define` keyword?
+; w/o define we cannot refer to length
+
+; this function determines the length of the empty list and nothing else
+(lambda (l)
+  (cond
+    ((null? l) 0)
+  (else (add1 (eternity (cdr l))))))    ; any argument to eternity returs no answer
+
+; this function is perhaps best named length0, but w/o `define` we cannot call length0
+; this makes it difficult to continue defining things like length<=1, length<=2, etc
+; thus, if we were to try and define lenght1 (i.e. the function that determines),
+; the length of lists that contain one or fewer items, we'd get:
+
+; legnth<=1
+(lambda (l)
+  (cond
+    ((null? l) 0)
+  (else
+    (add1
+      ((lambda (l)        ; here we simply write out lenght0
+        (cond
+          ((null? l) 0)
+        (else (add1
+              (eternity (cdr l))))))
+      (cdr l))))))    ; i.e. : (add1 length0 (cdr l))
+
+; we cannot write out length∞, so we must figure out a different solution:
+((lambda (length)
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+    (else (add1 (length (cdr l)))))))
+ eternity)
+
+ ; length<=1
+ ((lambda (f)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+      (else (add1 (f (cdr l)))))))
+((lambda (g)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+      (else (add1 (g (cdr l)))))))
+eternity))
+
+; etc...
+
+; now, we can make the function that takes length as an argument, and returns
+; the function that looks like length:
+; mk-length for "make length"
+
+; length0
+((lambda (mk-length)
+    (mk-length eternity))
+ (lambda (length)
+    (lambda (l)
+      (cond
+        ((null? l) 0)
+      (else (add1 (length (cdr l))))))))
+
+; ...etc...
+; length<=3
+((lambda (mk-length)
+  (mk-length
+    (mk-length
+      (mk-length
+        (mk-length eternity)))))
+ (lambda (length)
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+    (else (add1 (length (cdr l))))))))
+
+; ...and so on...
+; recursion is thus like an infinite tower of applications of mk-length to an
+; arbitrary function. b/c it is arbitrary, we could just pass in mk-length,
+; and use mk-length instead of length
+((lambda (mk-length)
+  (mk-length mk-length))
+ (lambda (mk-length)
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+    (else (add1 (mk-length (cdr l))))))))
+
+; length<=1 again:
+((lambda (mk-length)
+    (mk-length mk-length))
+ (lambda (mk-length)
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+    (else (add1
+      ((mk-length eternity)
+        (cdr l))))))))
