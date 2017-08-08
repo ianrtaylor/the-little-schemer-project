@@ -4,6 +4,7 @@
 # Load all necessary files containing exercises
 # Use rlwrap to make the REPL actually useable ><
 
+cd src
 rlwrap scheme --load \
 helpers.scm \
 3_cons_the_magnificent.scm \
