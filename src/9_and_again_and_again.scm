@@ -170,6 +170,10 @@
     (else (add1 (length (cdr l)))))))
  eternity)
 
+; note for the above: eternity is just a name. don't worry about whether or not it's been given any arguments.
+; since we're defining Higher Order Functions, we can treat functions as variables.
+
+
  ; length<=1
  ((lambda (f)
     (lambda (l)
@@ -233,3 +237,58 @@ eternity))
     (else (add1
       ((mk-length eternity)
         (cdr l))))))))
+
+
+; Another note: when tryign to decide how to de-recursion a function,
+; try pulling out the recursive call, and making it a parameter of a function.
+; For example, the recursive factorial:
+(define factorial
+  (lambda (n)
+    (if (= n 0) 1
+        (* n (factorial (- n 1))))))
+
+; And here, abstracting out the recursion:
+(define almost-factorial
+  (lambda (f)
+    (lambda (n)
+      (if (= n 0) 1
+          (* n (f (- n 1)))))))
+
+; see how almost-factorial is Higher Order? It must take a function f as its
+; argument, otherwise it won't make any sense.
+
+; (Y f) = fixpoint-of-f
+; (f fixpoint-of-f) = fixpoint-of-f
+; (Y f) = fixpoint-of-f = (f fixpoint-of-f)
+; (Y f) = (f (Y f))
+
+; lazy, non-combinator version:
+; (define Y
+;   (lambda (f)
+;     (f (Y f))))
+
+; doesn't work in strict scheme, because
+; (Y f)
+;   = (f (Y f))
+;   = (f (f (Y f)))
+;   = (f (f (f (Y f))))
+; etc...
+
+; to make a strict-compatible version, we must realize that (Y f) is going
+; to become a function that takes one argument. Thus, we can say:
+; (Y f) = (lambda (x) ((Y f) x))
+;
+; similarly: cos = (lambda (x) (cos x))
+; i.e., we could use cos or (lambda (x) (cos x)) to compute cosines, and they
+; would both do the exact same things
+
+; thus:
+(define Y
+  (lambda (f)
+    (f (lambda (x) ((Y f) x)))))
+
+; however, this is not the true Y-combinator, b/c it is explicitly recursive, and thus has free variables.
+
+
+
+; .... to be continued...
