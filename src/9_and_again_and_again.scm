@@ -288,7 +288,3 @@ eternity))
     (f (lambda (x) ((Y f) x)))))
 
 ; however, this is not the true Y-combinator, b/c it is explicitly recursive, and thus has free variables.
-
-
-
-; .... to be continued...
