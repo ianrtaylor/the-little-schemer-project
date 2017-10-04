@@ -114,3 +114,19 @@
     (else (add1
       ((mk-length eternity)
         (cdr l)))))))) '(apples))
+
+
+
+
+; Chapter 10:
+(lookup-in-entry
+  'entree
+  '((appetizer entree bevarage) (pate boeuf vin))
+  (lambda (n) '()))
+; ==> 'boeuf
+
+(lookup-in-entry
+  'no-such-item
+  '((appetizer entree bevarage) (pate boeuf vin))
+  (lambda (n) '()))
+; ==> '()
